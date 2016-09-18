@@ -1,0 +1,68 @@
+###############################################################################
+# Copyright © 2016 Stéphane Veyret stephane_DOT_veyret_AT_neptura_DOT_org
+#
+# This file is part of MagiCd.
+#
+# MagiCd is free software: you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# MagiCd is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# MagiCd. If not, see <http://www.gnu.org/licenses/>.
+###############################################################################
+# This file should not be set as executable as it should be automatically
+# sourced by main MagiCd script.
+# This file describes MagiCd directories which actually are docker embedded
+# directories. Note that because of docker behavior, it is not possible to move
+# such directory without deleting the docker container.
+
+# Entering the directory:
+# (Re-)Start a docker container and mount the directory in /root.
+magicd_enter() {
+	# Project name is directory name
+	local project_name=$(basename "${PWD}")
+
+	# Options
+	local image=${MAGI_CD_PARAMS[IMAGE]}
+	local options=${MAGI_CD_PARAMS[OPTIONS]}
+	local start_cmd=${MAGI_CD_PARAMS[CMD]}
+
+	# Set default values
+	: ${image:="gentoo/stage3-amd64"}
+	: ${options:="--volumes-from portage"}
+	: ${start_cmd:="/bin/bash"}
+
+	# Create the portage container if needed
+	if ! docker ps -a | grep "portage\$" >/dev/null; then
+		docker create -v /usr/portage --name portage gentoo/portage
+	fi
+
+	# Create or run the project container
+	if docker ps -a | grep "${project_name}\$" >/dev/null; then
+		docker start -i "${project_name}"
+	else
+		docker run ${options} -v "${PWD}":/root --name "${project_name}" -it ${image} "${start_cmd}"
+	fi
+
+	# Go back to previous directory at end of docker execution
+	echo 'command cd - >/dev/null' >&3
+}
+
+# Leaving the directory:
+# Nothing to do, leaving docker directory is done by exiting docker.
+# magicd_leave() {
+# }
+
+# Cleaning the directory:
+# Clean container, unused docker images and volumes.
+magicd_clean() {
+	local project_name=$(basename "${PWD}")
+	docker rm "${project_name}"
+	docker rmi $(docker images -qf "dangling=true") 2>>/dev/null
+	docker volume rm $(docker volume ls -qf "dangling=true") 2>>/dev/null
+}

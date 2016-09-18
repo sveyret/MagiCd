@@ -1,0 +1,104 @@
+###############################################################################
+# Copyright © 2016 Stéphane Veyret stephane_DOT_veyret_AT_neptura_DOT_org
+#
+# This file is part of MagiCd.
+#
+# MagiCd is free software: you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# MagiCd is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# MagiCd. If not, see <http://www.gnu.org/licenses/>.
+###############################################################################
+# This file should not be set as executable as it should be sourced.
+# The file is written in a way that it should be possible to alias cd command
+# to main entry point magicd_cd_.
+
+# Set MagiCd parameters
+: ${MAGICD_HOME:="$(command cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"}
+: ${MAGICD_CONF:="/etc"}
+
+# Source gettext
+source gettext.sh
+
+# Main entry point, can be aliased to cd.
+# Parameters: (all parameters to be given to cd).
+magicd_cd_() {
+	_magicd_execute "leave"
+	command cd "${@}"
+	_magicd_execute "enter"
+}
+
+# Secondary entry point, may be aliased to clean.
+# Parameters: (none).
+magicd_clean_() {
+	command cd "${@}"
+	magicd_execute "clean"
+	command cd -
+}
+
+# Internal function to execute the MagiCd behavior.
+# Parameters:
+# 1. Qualifier for the function to call.
+_magicd_execute() {
+	export TEXTDOMAIN=magicd
+
+	local magicd_file
+	local magicd_category
+	local magicd_response
+	for magicd_file in .magicd-*; do
+		if [[ -r ${magicd_file} ]]; then
+			magicd_category=${magicd_file#.magicd-}
+			magicd_response=$(mktemp)
+			(
+				if _magicd_source ${magicd_category}; then
+					if LC_ALL=C type "magicd_${1}" 2>/dev/null | head -1 | grep -q "function"; then
+						_magicd_call "magicd_${1}" ${magicd_file}
+					fi
+				fi
+			) 3>"${magicd_response}"
+			source "${magicd_response}"
+			rm "${magicd_response}"
+		fi
+	done
+
+	unset TEXTDOMAIN
+}
+
+# Internal function to source the MagiCd matching file.
+# Parameters:
+# 1. The name of the file to source (the category).
+_magicd_source() {
+	local magicd_filename="${1}"
+	local magicd_directory
+	for magicd_directory in "${HOME}" "${MAGICD_CONF}" "${MAGICD_HOME}"; do
+		if [[ -d "${magicd_directory}/magicd.d" ]] && [[ -r "${magicd_directory}/magicd.d/${magicd_filename}" ]]; then
+			source "${magicd_directory}/magicd.d/${magicd_filename}"
+			return 0
+		fi
+	done
+
+	echo $(eval_gettext "MagiCd: Unknown category \${magicd_filename}") >&2
+	return 1
+}
+
+# Internal function to call the MagiCd matching function.
+# Parameters:
+# 1. MagiCd function to execute, which existance is already checked.
+# 2. MagiCd parameter file.
+_magicd_call() {
+	local config_line
+	declare -A MAGICD_PARAMS
+	while read config_line; do 
+		if [[ ${config_line} =~ ^([^=]*)=(.*) ]]; then 
+			declare MAGICD_PARAMS[${BASH_REMATCH[1]}]="${BASH_REMATCH[2]}"
+		fi
+	done <${2}
+	${1}
+	unset MAGICD_PARAMS
+}
