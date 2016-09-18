@@ -32,11 +32,11 @@ Note that `make install` also support `DESTDIR` variable to install elsewhere th
 
 Automatic install of MagiCd creates aliases on `cd` and `clean` shell commands. When you enter in a special directory with the `cd` command, matching actions are executed. The `clean` command can be used in some cases to clean up a directory. This command is expecting the same arguments than `cd`.
 
-In order to identify a special directory, you must add a file named `.magicd-_category_`, where _category_ identify the directory type. Different existing categories depend on scripts added to parameter directories. The added file may contain parameters. Usable parameters depend on category.
+In order to identify a special directory, you must add a file named `.magicd-`_category_, where _category_ identify the directory type. Different existing categories depend on scripts added to parameter directories. The added file may contain parameters. Usable parameters depend on category.
 
 It is still possible to use command `\cd` in order to enter the directory without executing magic actions.
 
-# Catégories livrées
+# Delivered categories
 
 For the moment, there is only one standard delivered category.
 

@@ -4,7 +4,7 @@ MagiCd est un ensemble de scripts bash utilisés pour améliorer la commande she
 
 # Langue
 
-Le français étant ma langue maternel, fournir les documents et messages en français n'est pas une option. Les autres traductions sont bienvenues.
+Le français étant ma langue maternelle, fournir les documents et messages en français n'est pas une option. Les autres traductions sont bienvenues.
 
 Cependant, l'anglais étant la langue de la programmation, le code, y compris les noms de variable et commentaires, sont en anglais.
 
@@ -30,7 +30,7 @@ Notez que `make install` supporte également la variable `DESTDIR` pour installe
 
 L'installation automatique de MagiCd ajoute des alias sur les commandes `cd` et `clean`. Lorsque vous entrez dans un répertoire particulier avec la commande `cd`, les actions correspondantes s'exécutent. La commande `clean` peut être utilisée dans certain cas pour nettoyer un répertoire. Cette commande attend les même paramètres que `cd`.
 
-Pour identifier un répertoire particulier, vous devez y mettre un fichier `.magicd-_catégorie_`, où _catégorie_ identifie le type de répertoire. Les différentes catégories existantes dépendent des scripts ajoutés dans les répertoires de paramétrage. Le fichier ajouté peut éventuellement contenir des paramètres. Les paramètres utilisables dépendent de la catégorie.
+Pour identifier un répertoire particulier, vous devez y mettre un fichier `.magicd-`_catégorie_, où _catégorie_ identifie le type de répertoire. Les différentes catégories existantes dépendent des scripts ajoutés dans les répertoires de paramétrage. Le fichier ajouté peut éventuellement contenir des paramètres. Les paramètres utilisables dépendent de la catégorie.
 
 Il est toujours possible d'utiliser la commande `\cd` pour entrer dans le répertoire sans exécuter les actions magiques.
 
