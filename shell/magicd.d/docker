@@ -28,9 +28,9 @@ magicd_enter() {
 	local project_name=$(basename "${PWD}")
 
 	# Options
-	local image=${MAGI_CD_PARAMS[IMAGE]}
-	local options=${MAGI_CD_PARAMS[OPTIONS]}
-	local start_cmd=${MAGI_CD_PARAMS[CMD]}
+	local image=${MAGICD_PARAMS[IMAGE]}
+	local options=${MAGICD_PARAMS[OPTIONS]}
+	local start_cmd=${MAGICD_PARAMS[CMD]}
 
 	# Set default values
 	: ${image:="gentoo/stage3-amd64"}
