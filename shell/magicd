@@ -76,9 +76,9 @@ _magicd_execute() {
 _magicd_source() {
 	local magicd_filename="${1}"
 	local magicd_directory
-	for magicd_directory in "${HOME}" "${MAGICD_CONF}" "${MAGICD_HOME}"; do
-		if [[ -d "${magicd_directory}/magicd.d" ]] && [[ -r "${magicd_directory}/magicd.d/${magicd_filename}" ]]; then
-			source "${magicd_directory}/magicd.d/${magicd_filename}"
+	for magicd_directory in "${HOME}/." "${MAGICD_CONF}/" "${MAGICD_HOME}/"; do
+		if [[ -d "${magicd_directory}magicd.d" ]] && [[ -r "${magicd_directory}magicd.d/${magicd_filename}" ]]; then
+			source "${magicd_directory}magicd.d/${magicd_filename}"
 			return 0
 		fi
 	done

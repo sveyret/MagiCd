@@ -66,11 +66,11 @@ Following options can be added in the `.magicd-docker` file:
 
 # Category definition
 
-Directory categories will be searched in the directory `magicd.d` which can be found:
+Directory categories will be searched in:
 
-* in the directory where is installed the main script of MagiCd, usually reserved for categories which are delivered with the application.
-* in the configuration directory, identified by the `$MAGICD_CONF` environment variable, which, by default, goes to `/etc`, used for categories which are global to the computer.
-* in the user directory `$HOME`, for private categories of the user.
+* the sub-directory `magicd.d` of the directory where is installed the main script of MagiCd, usually reserved for categories which are delivered with the application.
+* the sub-directory `magicd.d` of the configuration directory, identified by the `$MAGICD_CONF` environment variable which, by default, equals `/etc`, used for categories which are global to the computer.
+* the sub-directory `.magicd.d` of the user directory `$HOME`, for private categories of the user.
 
 Those 3 directories are given by ascending priority order, the user directory overrides the 2 others, and the categories delivered with the application have the lowest priority.
 

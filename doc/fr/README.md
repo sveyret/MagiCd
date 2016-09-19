@@ -64,11 +64,11 @@ Les options suivantes peuvent être ajoutées dans le fichier `.magicd-docker` 
 
 # Définition des catégories
 
-Les catégories de répertoire vont être recherchées dans le répertoire `magicd.d` situé :
+Les catégories de répertoire vont être recherchées dans :
 
-* dans le répertoire où se trouve le script principal de MagiCd, en général réservé aux catégories livrées avec le produit ;
-* dans le répertoire de configuration, identifié par la variable d'environnement `$MAGICD_CONF`, qui pointe par défaut sur `/etc`, utilisé pour les catégories globales à l'ordinateur ;
-* dans le répertoire de l'utilisateur `$HOME`, pour les catégories privées de l'utilisateur.
+* le sous-répertoire `magicd.d` du répertoire où se trouve le script principal de MagiCd, en général réservé aux catégories livrées avec le produit ;
+* le sous-répertoire `magicd.d` du répertoire de configuration, identifié par la variable d'environnement `$MAGICD_CONF`, qui pointe par défaut sur `/etc`, utilisé pour les catégories globales à l'ordinateur ;
+* le sous-répertoire `.magicd.d` du répertoire de l'utilisateur `$HOME`, pour les catégories privées de l'utilisateur.
 
 Ces 3 répertoires sont donnés par ordre de priorité croissante, le répertoire utilisateur surchargeant donc les deux autres, tandis que les catégories livrées avec le produit sont les moins prioritaires.
 
