@@ -39,7 +39,7 @@ magicd_cd_() {
 magicd_clean_() {
 	command cd "${@}"
 	magicd_execute "clean"
-	command cd -
+	command cd - >/dev/null
 }
 
 # Internal function to execute the MagiCd behavior.
