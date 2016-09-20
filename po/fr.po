@@ -6,10 +6,10 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: MagiCd 0.1\n"
+"Project-Id-Version: MagiCd 0.2\n"
 "Report-Msgid-Bugs-To: Stéphane Veyret\n"
 "POT-Creation-Date: 2016-09-18 11:22+0200\n"
-"PO-Revision-Date: 2016-09-18 11:22+0200\n"
+"PO-Revision-Date: 2016-09-20 21:37+0200\n"
 "Last-Translator: Stéphane Veyret <stephane_DOT_veyret_AT_neptura_DOT_org>\n"
 "Language-Team: Stéphane Veyret <stephane_DOT_veyret_AT_neptura_DOT_org>\n"
 "Language: fr\n"
@@ -17,7 +17,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../shell/magicd:79
+#: shell/magicd:86
 #, sh-format
 msgid "MagiCd: Unknown category ${magicd_filename}"
 msgstr "MagiCd : Catégorie ${magicd_filename} inconnue"
+
+#: shell/magicd.d/envar:49
+#, sh-format
+msgid "MagiCd: Environment is already saved in ${_MAGICD_ENVAR_SAVE}"
+msgstr ""
+"MagiCd : L'environnement est déjà enregistré dans ${_MAGICD_ENVAR_SAVE}"
+
+#: shell/magicd.d/envar:51
+#, sh-format
+msgid "MagiCd: Environment variable is already set to non-existent file"
+msgstr ""
+"MagiCd : La variable d'environnement pointe déjà sur un fichier inexistant"
+
+#: shell/magicd.d/envar:53
+#, sh-format
+msgid "MagiCd: The current command will override it"
+msgstr "MagiCd : La commande en cours va le surcharger"
+
+#: shell/magicd.d/envar:73
+#, sh-format
+msgid "MagiCd: Environment variable or file not found for saved environment"
+msgstr ""
+"MagiCd : Variable d'environnement ou fichier de sauvegarde de "
+"l'environnement non trouvé"

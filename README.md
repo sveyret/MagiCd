@@ -38,7 +38,25 @@ It is still possible to use command `\cd` in order to enter the directory withou
 
 # Delivered categories
 
-For the moment, there is only one standard delivered category.
+## Envar
+
+An `envar` directory is identified by a `.magicd-envar`. This file contains key/value pairs, which will be used to set environment variables in the directory.
+
+### Entering
+
+When entering in the directory, parameters from the configuration file are exported as environment variables.
+
+### Leaving
+
+When leaving the directory, environment is restaured to its state at entering time.
+
+### Cleaning
+
+Cleaning command has no effect on EnVar directory.
+
+### Parameters
+
+Each parameter of the `.magicd-envar` file is used to set environment variables.
 
 ## Docker
 

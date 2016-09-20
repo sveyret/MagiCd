@@ -36,7 +36,25 @@ Il est toujours possible d'utiliser la commande `\cd` pour entrer dans le réper
 
 # Catégories livrées
 
-Il n'existe actuellement qu'une seule catégorie livrée en standard.
+## EnVar
+
+Un répertoire de type `envar` est identifié par un fichier `.magicd-envar`. Ce fichier contient des paires de clé/valeur qui seront utilisées pour positionner des variables d'environnement dans le répertoire concerné.
+
+### Entrée
+
+À l'entrée du répertoire, les paramètres positionnées dans le fichier de configuration sont exportées comme variables d'environnement.
+
+### Sortie
+
+À la sortie du répertoire, l'environnement est restauré tel qu'il était lors de l'entrée.
+
+### Nettoyage
+
+La commande de nettoyage est sans effet sur un répertoire EnVar.
+
+### Paramètres
+
+Chaque paramètre du fichier `.magicd-envar` est utilisé pour positionner les variables d'environnement.
 
 ## Docker
 

@@ -1,0 +1,83 @@
+###############################################################################
+# Copyright © 2016 Stéphane Veyret stephane_DOT_veyret_AT_neptura_DOT_org
+#
+# This file is part of MagiCd.
+#
+# MagiCd is free software: you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# MagiCd is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# MagiCd. If not, see <http://www.gnu.org/licenses/>.
+###############################################################################
+# This file should not be set as executable as it should be automatically
+# sourced by main MagiCd script.
+# This file describes MagiCd directories for which some specific environment
+# variables and aliases needs to be set.
+
+# Test if given variable is set.
+# Parameters:
+# 1. The name of the variable.
+# Output (stdout):
+# True if variable is set, False if not.
+_magicd_envar_test() {
+	eval "if [[ -z \${${1}+something} ]]; then echo False; else echo True; fi"
+}
+
+# Get the value of the given variable.
+# Parameters:
+# 1. The name of the variable.
+# Output (stdout):
+# The value of the variable.
+_magicd_envar_export() {
+	eval "echo \"export ${1}=\\\"\${${1}}\\\"\""
+}
+
+# Entering the directory:
+# Set environment variables.
+magicd_enter() {
+	local envar_key
+	local envar_save=$(mktemp)
+	# Set environment variable
+	if [[ ! -z "${_MAGICD_ENVAR_SAVE}" ]]; then
+		if [[ -f "${_MAGICD_ENVAR_SAVE}" ]]; then
+			echo $(eval_gettext "MagiCd: Environment is already saved in \${_MAGICD_ENVAR_SAVE}") >&2
+		else
+			echo $(eval_gettext "MagiCd: Environment variable is already set to non-existent file") >&2
+		fi
+		echo $(eval_gettext "MagiCd: The current command will override it") >&2
+	fi
+	echo "export _MAGICD_ENVAR_SAVE=\"${envar_save}\"" >&3
+	echo "unset _MAGICD_ENVAR_SAVE" >>"${envar_save}"
+
+	# Iterate on the array
+	for envar_key in "${!MAGICD_PARAMS[@]}"; do
+		if [[ $(_magicd_envar_test "${envar_key}") == "True" ]]; then
+			echo $(_magicd_envar_export "${envar_key}") >>"${envar_save}"
+		else
+			echo "unset ${envar_key}" >>"${envar_save}"
+		fi
+		echo "export ${envar_key}=\"${MAGICD_PARAMS[${envar_key}]}\"" >&3
+	done
+}
+
+# Leaving the directory:
+# Reset environment to initial status.
+magicd_leave() {
+	if [[ -z "${_MAGICD_ENVAR_SAVE}" ]] || [[ ! -f "${_MAGICD_ENVAR_SAVE}" ]]; then
+		echo $(eval_gettext "MagiCd: Environment variable or file not found for saved environment") >&2
+	else
+		cat "${_MAGICD_ENVAR_SAVE}" >&3
+		rm "${_MAGICD_ENVAR_SAVE}"
+	fi
+}
+
+# Cleaning the directory:
+# Nothing to clean, environment is reset when leaving directory.
+# magicd_clean() {
+# }
