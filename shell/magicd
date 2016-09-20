@@ -38,7 +38,7 @@ magicd_cd_() {
 # Parameters: (none).
 magicd_clean_() {
 	command cd "${@}"
-	magicd_execute "clean"
+	_magicd_execute "clean"
 	command cd - >/dev/null
 }
 
